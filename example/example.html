@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>jQuery Scrollfire Example</title>
+    <style>
+        *, *:before, *:after {
+            -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box;
+        }
+        section {
+            margin-bottom: 600px;
+        }
+        .container {
+            height: 200px;
+            border: 2px dashed deeppink;
+        }
+        .floated-elements {
+            height: 200px;
+        }
+        .floated-elements .cell {
+            width: 25%;
+            border: 2px dashed orange;
+            height: 100px;
+            float: left;
+        }
+    </style>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script type="text/javascript" src="../jquery.scrollfire.min.js"></script>
+</head>
+<body>
+<h1>jQuery Scrollfire Example</h1>
+<h2>Scroll window to view examples.</h2>
+<button id="1">Remove Scrollfire From Floated Elements</button>
+<section>
+    <h4>Element 1</h4>
+    <div class="container-1 container"></div>
+</section>
+<section>
+    <h4>Element 2</h4>
+    <div class="container-2 container"></div>
+</section>
+<section>
+    <h4>Element 3</h4>
+    <div class="container-3 container"></div>
+</section>
+<section>
+    <h4>Element 4</h4>
+    <div class="container-4 container"></div>
+</section>
+<section>
+    <h4>Element 5</h4>
+    <div class="container-5 container"></div>
+</section>
+<section>
+    <h4>Element 6</h4>
+    <div class="container-6 container"></div>
+</section>
+<section>
+    <h4>Element 7</h4>
+    <div class="container-7 container"></div>
+</section>
+<section>
+    <h4>Floated Elements</h4>
+    <div class="floated-elements">
+        <div class="cell"></div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+    </div>
+</section>
+<section>
+    <h4>Element 8</h4>
+    <div class="container-8 container"></div>
+</section>
+
+<script>
+    $(document).ready(function() {
+
+        // Example attached to DIVs with class .container
+        $('.container').scrollfire({
+            //offset: 200,              // Default offset setting
+            //topInOffset: 0,           // Further offset properties override the default offset setting
+            //topOutOffset: 0,          // ...
+            //bottomInOffset: 0,        // ...
+            //bottomOutOffset: 0,       // ...
+            onTopIn: function( elm ) {
+                $(elm).animate({width: "100%"}, 500, function() {
+                    $(this).css('border', '2px dashed deeppink');
+                });
+            },
+            onTopOut: function( elm ) {
+                $(elm).animate({width: "100px"}, 500, function() {
+                    $(this).css('border', '2px dashed deeppink');
+                });
+            },
+            onBottomIn: function( elm ) {
+                $(elm).animate({width: "100%"}, 500, function() {
+                    $(this).css('border', '2px solid black');
+                });
+            },
+            onBottomOut: function( elm ) {
+                $(elm).animate({width: "100px"}, 500, function() {
+                    $(this).css('border', '2px solid black');
+                });
+            }
+        });
+
+
+        // Example attached to floated DIVs with class .cell
+        $('.cell').scrollfire({
+            onTopIn: function( elm ) {
+                $(elm).animate({width: "25%"}, 500);
+            },
+            onTopOut: function( elm ) {
+                $(elm).animate({width: "100%"}, 500);
+            },
+            onBottomIn: function( elm ) {
+                $(elm).animate({width: "100%"}, 500);
+            },
+            onBottomOut: function( elm ) {
+                $(elm).animate({width: "25%"}, 500);
+            }
+        });
+
+
+        // Button event handler - Remove registered scrollfire elements
+        $('#1').click(function(e) {
+           $('.cell').scrollfire('remove');
+        });
+    });
+</script>
+</body>
+</html>

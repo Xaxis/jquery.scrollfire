@@ -1,0 +1,30 @@
+{
+  "name": "scrollfire",
+  "title": "jQuery Scrollfire",
+  "version": "1.0.0",
+  "description": "",
+  "keywords": [
+    "scroll", "responsive", "event", "DOM", "jquery", "window", "monitoring"
+  ],
+  "author": {
+    "name": "Wil Neeley",
+    "url": "https://github.com/Xaxis"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/Xaxis/jquery.scrollfire/LICENSE.txt"
+    }
+  ],
+  "dependencies": {
+    "jquery": ">=1.4 <2.1"
+  },
+  "homepage": "https://github.com/Xaxis/jquery.scrollfire",
+  "doc": "https://github.com/Xaxis/jquery.scrollfire",
+  "maintainers": [
+    {
+      "name": "Wil Neeley",
+      "url": "https://github.com/Xaxis"
+    }
+  ]
+}
