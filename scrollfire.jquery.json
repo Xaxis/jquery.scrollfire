@@ -1,7 +1,7 @@
 {
   "name": "scrollfire",
   "title": "jQuery Scrollfire",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Allows useful callbacks to be fired upon elements scrolling into and out of view from both the top and bottom of the viewport/window.",
   "keywords": [
     "scroll", "responsive", "event", "DOM", "jquery", "window", "monitoring"
