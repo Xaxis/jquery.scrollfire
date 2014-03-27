@@ -69,7 +69,7 @@ $('.container').scrollfire({
 ### Using Scrollfire Methods
 
 ```javascript
-// Remove a element(s) from scrollfire.
+// Remove an element(s) from scrollfire.
 $('.cell').scrollfire('remove');
 ```
 
@@ -92,3 +92,7 @@ See `example.html` in examples folder.
 #### Version 1.0.0
 
 * initial version
+
+#### Version 1.1.0
+
+* added parallax scrolling methods: `onScrollDown`, `onScrollUp`, and `onScroll`
