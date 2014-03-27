@@ -1,10 +1,10 @@
 # jQuery Scrollfire
 
-Version 1.0.1
+Version 1.1.0
 
 ## Summary
 
-Allows useful callbacks to be fired upon elements scrolling into and out of view from both the top and bottom of the viewport/window.
+Allows useful callbacks to be fired upon elements scrolling into and out of view from both the top and bottom of the viewport/window. Additionally, provides a mechanism to animate parallax elements.
 
 ## Author
 
@@ -47,23 +47,21 @@ $('.container').scrollfire({
         $(elm).animate({width: "100px"}, 500, function() {
             $(this).css('border', '2px solid black');
         });
-    }
-});
-
-
-// Example attached to floated DIVs with class .cell
-$('.cell').scrollfire({
-    onTopIn: function( elm ) {
-        $(elm).animate({width: "25%"}, 500);
     },
-    onTopOut: function( elm ) {
-        $(elm).animate({width: "100%"}, 500);
+    onScrollDown: function( elm, distance_scrolled, percentage_to_top ) {
+      var div = $(elm);
+      var div_height = div.height();
+      var parallax_pos = (div_height * from_top) - $('.parallax-cell').outerHeight();
+      $(elm).find('.parallax-cell').css('top', parallax_pos);
     },
-    onBottomIn: function( elm ) {
-        $(elm).animate({width: "100%"}, 500);
+    onScrollUp: function( elm, distance_scrolled, percentage_to_top ) {
+      var div = $(elm);
+      var div_height = div.height();
+      var parallax_pos = (div_height * from_top) - $('.parallax-cell').outerHeight();
+      $(elm).find('.parallax-cell').css('top', parallax_pos);
     },
-    onBottomOut: function( elm ) {
-        $(elm).animate({width: "25%"}, 500);
+    onScroll: function( elm, distance_scrolled, scroll_direction ) {
+      //console.log('Happening continuously);
     }
 });
 ```

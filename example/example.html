@@ -10,21 +10,23 @@
             margin-bottom: 600px;
         }
         .container {
-            height: 200px;
-            border: 2px dashed deeppink;
+            margin: 0 auto;
+            width: 200px;
+            height: 300px;
+            border: 8px dashed deeppink;
+            position: relative;
         }
-        .floated-elements {
-            height: 200px;
-        }
-        .floated-elements .cell {
-            width: 25%;
-            border: 2px dashed orange;
-            height: 100px;
-            float: left;
+        .parallax-cell {
+            border: 22px dashed yellow;
+            background-color: red;
+            position: absolute;
+            width: 75px;
+            height: 75px;
+            left: 100px;
         }
     </style>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-    <script type="text/javascript" src="../jquery.scrollfire.min.js"></script>
+    <script type="text/javascript" src="../jquery.scrollfire.js"></script>
 </head>
 <body>
 <h1>jQuery Scrollfire Example</h1>
@@ -32,92 +34,95 @@
 <button id="1">Remove Scrollfire From Floated Elements</button>
 <section>
     <h4>Element 1</h4>
-    <div class="container-1 container"></div>
+    <div class="container-1 container">
+        <div class="parallax-cell"></div>
+    </div>
 </section>
 <section>
     <h4>Element 2</h4>
-    <div class="container-2 container"></div>
+    <div class="container-2 container">
+        <div class="parallax-cell"></div>
+    </div>
 </section>
 <section>
     <h4>Element 3</h4>
-    <div class="container-3 container"></div>
+    <div class="container-3 container">
+        <div class="parallax-cell"></div>
+    </div>
 </section>
 <section>
     <h4>Element 4</h4>
-    <div class="container-4 container"></div>
+    <div class="container-4 container">
+        <div class="parallax-cell"></div>
+    </div>
 </section>
 <section>
     <h4>Element 5</h4>
-    <div class="container-5 container"></div>
+    <div class="container-5 container">
+        <div class="parallax-cell"></div>
+    </div>
 </section>
 <section>
     <h4>Element 6</h4>
-    <div class="container-6 container"></div>
+    <div class="container-6 container">
+        <div class="parallax-cell"></div>
+    </div>
 </section>
 <section>
     <h4>Element 7</h4>
-    <div class="container-7 container"></div>
-</section>
-<section>
-    <h4>Floated Elements</h4>
-    <div class="floated-elements">
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
+    <div class="container-7 container">
+        <div class="parallax-cell"></div>
     </div>
 </section>
 <section>
     <h4>Element 8</h4>
-    <div class="container-8 container"></div>
+    <div class="container-8 container">
+        <div class="parallax-cell"></div>
+    </div>
+</section>
+<section>
+    <h4>Element 9</h4>
+    <div class="container-9 container">
+        <div class="parallax-cell"></div>
+    </div>
 </section>
 
 <script>
     $(document).ready(function() {
 
-        // Example attached to DIVs with class .container
+        // Example of using the once methods
         $('.container').scrollfire({
-            //offset: 200,              // Default offset setting
-            //topInOffset: 0,           // Further offset properties override the default offset setting
-            //topOutOffset: 0,          // ...
-            //bottomInOffset: 0,        // ...
-            //bottomOutOffset: 0,       // ...
-            onTopIn: function( elm ) {
-                $(elm).animate({width: "100%"}, 500, function() {
-                    $(this).css('border', '2px dashed deeppink');
-                });
+            offset: 0,
+            topInOffset: 0,
+            topOutOffset: 0,
+            bottomInOffset: 0,
+            bottomOutOffset: 0,
+            onTopIn: function( elm, scroll ) {
+                $(elm).animate({width: "300px"}, 500);
             },
-            onTopOut: function( elm ) {
-                $(elm).animate({width: "100px"}, 500, function() {
-                    $(this).css('border', '2px dashed deeppink');
-                });
+            onTopOut: function( elm, scroll ) {
+                $(elm).animate({width: "900px"}, 500);
             },
             onBottomIn: function( elm ) {
-                $(elm).animate({width: "100%"}, 500, function() {
-                    $(this).css('border', '2px solid black');
-                });
+                $(elm).animate({width: "300px"}, 500);
             },
             onBottomOut: function( elm ) {
-                $(elm).animate({width: "100px"}, 500, function() {
-                    $(this).css('border', '2px solid black');
-                });
-            }
-        });
-
-
-        // Example attached to floated DIVs with class .cell
-        $('.cell').scrollfire({
-            onTopIn: function( elm ) {
-                $(elm).animate({width: "25%"}, 500);
+                $(elm).animate({width: "900px"}, 500);
             },
-            onTopOut: function( elm ) {
-                $(elm).animate({width: "100%"}, 500);
+            onScrollDown: function( elm, dist, from_top ) {
+                var div = $(elm);
+                var div_height = div.height();
+                var parallax_pos = (div_height * from_top) - $('.parallax-cell').outerHeight();
+                $(elm).find('.parallax-cell').css('top', parallax_pos);
             },
-            onBottomIn: function( elm ) {
-                $(elm).animate({width: "100%"}, 500);
+            onScrollUp: function( elm, dist, from_top ) {
+                var div = $(elm);
+                var div_height = div.height();
+                var parallax_pos = (div_height * from_top) - $('.parallax-cell').outerHeight();
+                $(elm).find('.parallax-cell').css('top', parallax_pos);
             },
-            onBottomOut: function( elm ) {
-                $(elm).animate({width: "25%"}, 500);
+            onScroll: function( elm, dist, dir ) {
+                //console.log('Happening continuously);
             }
         });
 

@@ -17,10 +17,25 @@
       // The plugin's defaults
       defaults = {
 
-        // Plugin's callbacks
+        // Executes CONTINUOUSLY when scrolling down AND while element is in view
+        onScrollDown: function() {},
+
+        // Executes CONTINUOUSLY when scrolling up AND while element is in view
+        onScrollUp: function() {},
+
+        // Executes CONTINUOUSLY when scrolling in either direction
+        onScroll: function() {},
+
+        // Executes ONCE when element comes in from TOP (DOWN)
         onTopIn: function() {},
+
+        // Executes ONCE when element goes out the TOP (UP)
         onTopOut: function() {},
+
+        // Executes ONCE when element comes in from the BOTTOM (DOWN)
         onBottomIn: function() {},
+
+        // Executes ONCE when element goes out the BOTTOM (UP)
         onBottomOut: function() {},
 
         // Offsets
@@ -65,6 +80,9 @@
     var scroll_obj = {
       _guid: globals.guid,
       _element: plugin.element,
+      _on_scroll_down: plugin.options.onScrollDown,
+      _on_scroll_up: plugin.options.onScrollUp,
+      _on_scroll: plugin.options.onScroll,
       _on_top_in: plugin.options.onTopIn,
       _on_top_in_once: true,
       _on_top_out: plugin.options.onTopOut,
@@ -86,8 +104,15 @@
       // Position of current scroll
       var scroll_pos = $(window).scrollTop();
 
+      // Reference the scroll direction
+      var scroll_dir = '';
+
+      // Calculate the scroll difference (distance scrolled since last scroll event)
+      var scroll_diff = Math.abs(globals.last_scroll_pos - scroll_pos);
+
       // Scrolling Down
       if (scroll_pos > globals.last_scroll_pos) {
+        scroll_dir = 'down';
 
         // Iterate over our registration objects
         $.each(globals.registry, function(index, value) {
@@ -95,23 +120,49 @@
           // Elements position from the top
           var elm_pos_top = $(value._element).offset().top;
 
-          // Fire the registered onTopOut callback
-          if (scroll_pos >= (elm_pos_top + (value._top_out_offset ? value._top_out_offset : value._offset)) && value._on_top_out_once) {
-            value._on_top_in_once = true;
-            value._on_top_out_once = false;
-            value._on_top_out( value._element );
+          // Reference element position conditions
+          var onTopOut_true = scroll_pos >= (elm_pos_top + (value._top_out_offset ? value._top_out_offset : value._offset));
+          var onBottomIn_true = (scroll_pos + $(window).outerHeight()) >= (elm_pos_top + (value._bottom_in_offset ? value._bottom_in_offset : value._offset));
+
+          // Reference conditions that tell us if an element is visible in the screen
+          var visibleTop = (scroll_pos <= (elm_pos_top + $(value._element).outerHeight()));
+          var visibleBottom = (scroll_pos + $(window).outerHeight()) > elm_pos_top;
+
+          // Fire the registered onScroll callback
+          value._on_scroll( value._element, scroll_diff, scroll_dir );
+
+          // Fire the registered onScrollDown callback
+          if ( visibleTop && visibleBottom ) {
+
+            // For user convenience, it is useful to pass a value to the callbacks that is the percentage distance an
+            // element is from going out of view at the top of the window.
+            var window_height = $(window).outerHeight();
+            var to_top_distance = (elm_pos_top + $(value._element).outerHeight()) - scroll_pos;
+            var perc_from_top = (to_top_distance / window_height);
+            perc_from_top = (perc_from_top > 1) ? 1.00 : perc_from_top.toFixed(2);
+
+            // Fire callback
+            value._on_scroll_down( value._element, scroll_diff, perc_from_top );
           }
 
-          // Fire the registered onInBottom callback
-          if ((scroll_pos + $(window).height()) >= (elm_pos_top + (value._bottom_in_offset ? value._bottom_in_offset : value._offset)) && value._on_bottom_in_once) {
+          // Fire the registered onTopOut callback
+          if (onTopOut_true && value._on_top_out_once) {
+            value._on_top_in_once = true;
+            value._on_top_out_once = false;
+            value._on_top_out( value._element, scroll_diff );
+          }
+
+          // Fire the registered onBottomIn callback
+          if (onBottomIn_true && value._on_bottom_in_once) {
             value._on_bottom_out_once = true;
             value._on_bottom_in_once = false;
-            value._on_bottom_in( value._element );
+            value._on_bottom_in( value._element, scroll_diff );
           }
         });
 
       // Scrolling Up
       } else {
+        scroll_dir = 'up';
 
         // Iterate over our registration objects
         $.each(globals.registry, function(index, value) {
@@ -119,18 +170,43 @@
           // Bottom of element's position from the top
           var elm_pos_top = $(value._element).offset().top + $(value._element).outerHeight();
 
+          // Reference element position conditions
+          var onTopIn_true = scroll_pos <= (elm_pos_top + (value._top_in_offset ? value._top_in_offset : value._offset));
+          var onBottomOut_true = (scroll_pos + $(window).outerHeight()) <= (elm_pos_top + (value._bottom_out_offset ? value._bottom_out_offset : value._offset));
+
+          // Reference conditions that tell us if an element is visible in the screen
+          var visibleTop = scroll_pos < elm_pos_top;
+          var visibleBottom = ((scroll_pos + $(window).outerHeight()) + $(value._element).outerHeight()) > elm_pos_top;
+
+          // Fire the registered onScroll callback
+          value._on_scroll( value._element, scroll_diff, scroll_dir );
+
+          // Fire the registered onScrollUp callback
+          if ( visibleTop && visibleBottom ) {
+
+            // For user convenience, it is useful to pass a value to the callbacks that is the percentage distance an
+            // element is from going out of view at the top of the window.
+            var window_height = $(window).outerHeight();
+            var to_top_distance = (elm_pos_top) - scroll_pos;
+            var perc_from_top = (to_top_distance / window_height);
+            perc_from_top = (perc_from_top > 1) ? 1.00 : perc_from_top.toFixed(2);
+
+            // Fire callback
+            value._on_scroll_up( value._element, scroll_diff, perc_from_top );
+          }
+
           // Fire the registered onTopIn callback
-          if (scroll_pos <= (elm_pos_top + (value._top_in_offset ? value._top_in_offset : value._offset)) && value._on_top_in_once) {
+          if (onTopIn_true && value._on_top_in_once) {
             value._on_top_out_once = true;
             value._on_top_in_once = false;
-            value._on_top_in( value._element );
+            value._on_top_in( value._element, scroll_diff );
           }
 
           // Fire the registered onBottomOut callback
-          if ((scroll_pos + $(window).outerHeight()) <= (elm_pos_top + (value._bottom_out_offset ? value._bottom_out_offset : value._offset)) && value._on_bottom_out_once) {
+          if (onBottomOut_true && value._on_bottom_out_once) {
             value._on_bottom_in_once = true;
             value._on_bottom_out_once = false;
-            value._on_bottom_out( value._element );
+            value._on_bottom_out( value._element, scroll_diff );
           }
         });
       }
