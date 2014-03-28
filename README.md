@@ -66,6 +66,7 @@ $('.container').scrollfire({
         //console.log('Continuously happening while scrolling up');
     }
 });
+```
 
 ```javascript
 // Example of using parallax scrolling
