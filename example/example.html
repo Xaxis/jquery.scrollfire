@@ -11,79 +11,80 @@
         }
         .container {
             margin: 0 auto;
-            width: 200px;
-            height: 300px;
-            border: 8px dashed deeppink;
+            padding: 10px;
+            width: 600px;
+            height: 600px;
+            border: 8px dashed deepskyblue;
             position: relative;
+            background-color: #add8e6;
         }
         .parallax-cell {
-            border: 22px dashed yellow;
-            background-color: red;
+            border: 1px dashed white;
+            background-color: cornflowerblue;
+            color: white;
+            padding: 5px;
             position: absolute;
-            width: 75px;
-            height: 75px;
-            left: 100px;
+            width: 100px;
+            height: 50px;
+            top: 135px;
+            left: 250px;
+            text-align: center;
         }
     </style>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
     <script type="text/javascript" src="../jquery.scrollfire.js"></script>
 </head>
 <body>
+<div id="top_offset_indicator"></div>
+<div id="bottom_offset_indicator"></div>
 <h1>jQuery Scrollfire Example</h1>
 <h2>Scroll window to view examples.</h2>
-<button id="1">Remove Scrollfire From Floated Elements</button>
+<button id="1">Destroy Parallax Scrolling</button>
 <section>
-    <h4>Element 1</h4>
+    <h4>Example 1</h4>
     <div class="container-1 container">
-        <div class="parallax-cell"></div>
+        <div class="parallax-cell">Parallaxed Element</div>
     </div>
 </section>
 <section>
-    <h4>Element 2</h4>
+    <h4>Example 2</h4>
     <div class="container-2 container">
-        <div class="parallax-cell"></div>
+        <div class="parallax-cell">Parallaxed Element</div>
     </div>
 </section>
 <section>
-    <h4>Element 3</h4>
+    <h4>Example 3</h4>
     <div class="container-3 container">
-        <div class="parallax-cell"></div>
     </div>
 </section>
 <section>
-    <h4>Element 4</h4>
+    <h4>Example 4</h4>
     <div class="container-4 container">
-        <div class="parallax-cell"></div>
     </div>
 </section>
 <section>
-    <h4>Element 5</h4>
+    <h4>Example 5</h4>
     <div class="container-5 container">
-        <div class="parallax-cell"></div>
     </div>
 </section>
 <section>
-    <h4>Element 6</h4>
+    <h4>Example 6</h4>
     <div class="container-6 container">
-        <div class="parallax-cell"></div>
     </div>
 </section>
 <section>
-    <h4>Element 7</h4>
+    <h4>Example 7</h4>
     <div class="container-7 container">
-        <div class="parallax-cell"></div>
     </div>
 </section>
 <section>
-    <h4>Element 8</h4>
+    <h4>Example 8</h4>
     <div class="container-8 container">
-        <div class="parallax-cell"></div>
     </div>
 </section>
 <section>
-    <h4>Element 9</h4>
+    <h4>Example 9</h4>
     <div class="container-9 container">
-        <div class="parallax-cell"></div>
     </div>
 </section>
 
@@ -97,31 +98,52 @@
             topOutOffset: 0,
             bottomInOffset: 0,
             bottomOutOffset: 0,
-            onTopIn: function( elm, scroll ) {
-                $(elm).animate({width: "300px"}, 500);
+            onTopIn: function( elm, distance_scrolled ) {
+                $(elm).animate({opacity: 1}, 500);
             },
-            onTopOut: function( elm, scroll ) {
-                $(elm).animate({width: "900px"}, 500);
+            onTopOut: function( elm, distance_scrolled ) {
+                $(elm).animate({opacity: 0.2}, 500);
             },
-            onBottomIn: function( elm ) {
-                $(elm).animate({width: "300px"}, 500);
+            onBottomIn: function( elm, distance_scrolled ) {
+                $(elm).animate({opacity: 1}, 500);
             },
-            onBottomOut: function( elm ) {
-                $(elm).animate({width: "900px"}, 500);
+            onBottomOut: function( elm, distance_scrolled ) {
+                $(elm).animate({opacity: 0.2}, 500);
             },
-            onScrollDown: function( elm, dist, from_top ) {
-                var div = $(elm);
-                var div_height = div.height();
-                var parallax_pos = (div_height * from_top) - $('.parallax-cell').outerHeight();
-                $(elm).find('.parallax-cell').css('top', parallax_pos);
+            onScroll: function( elm, distance_scrolled, scroll_direction ) {
+                //console.log('Happening continuously while scrolling in either direction');
             },
-            onScrollUp: function( elm, dist, from_top ) {
-                var div = $(elm);
-                var div_height = div.height();
-                var parallax_pos = (div_height * from_top) - $('.parallax-cell').outerHeight();
-                $(elm).find('.parallax-cell').css('top', parallax_pos);
+            onScrollDown: function( elm, distance_scrolled, percentage_to_top ) {
+                //console.log('Continuously happening while scrolling down when element is in view!');
             },
-            onScroll: function( elm, dist, dir ) {
+            onScrollUp: function( elm, distance_scrolled, percentage_to_top ) {
+                //console.log('Continuously happening while scrolling up when element is in view!');
+            },
+            onScrollDownAlways: function( elm, distance_scrolled ) {
+                //console.log('Continuously happening while scrolling down!');
+            },
+            onScrollUpAlways: function( elm, distance_scrolled ) {
+                //console.log('Continuously happening while scrolling up');
+            }
+        });
+
+
+        // Example of using parallax scrolling
+        $('.parallax-cell').scrollfire({
+
+            // Parallax is disabled when element is 100 pixels away from scrolling out of view in either direction
+            offset: 100,
+            parallax: {
+
+                // The element the jQuery selected element is a direct child of
+                childOf: $('.container'),
+
+                // Parallax is 75% the window scrolling speed
+                speed: 0.75
+            },
+
+            // Additionally, you can still use any of the callbacks
+            onScroll: function( elm, distance_scrolled, direction ) {
                 //console.log('Happening continuously);
             }
         });
@@ -129,7 +151,7 @@
 
         // Button event handler - Remove registered scrollfire elements
         $('#1').click(function(e) {
-           $('.cell').scrollfire('remove');
+           $('.parallax-cell').scrollfire('remove');
         });
     });
 </script>
