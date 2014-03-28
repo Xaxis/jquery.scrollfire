@@ -87,19 +87,13 @@ $('.parallax-cell').scrollfire({
         //console.log('Happening continuously!');
     }
 });
-
-
-// Button event handler - Remove registered scrollfire elements
-$('#1').click(function(e) {
-   $('.parallax-cell').scrollfire('remove');
-});
 ```
 
 ### Using Scrollfire Methods
 
 ```javascript
 // Remove an element(s) from scrollfire.
-$('.cell').scrollfire('remove');
+$('.parallax-cell').scrollfire('remove');
 ```
 
 ### Caveats
