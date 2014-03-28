@@ -67,7 +67,7 @@ $('.container').scrollfire({
     }
 });
 
-
+```javascript
 // Example of using parallax scrolling
 $('.parallax-cell').scrollfire({
 
