@@ -15,10 +15,10 @@ Wil Neeley ( [@wilneeley](http://twitter.com/wilneeley) / [trestlemedia.net](htt
 jQuery.scrollfire gives its users the ability to execute callbacks on a multitude of scroll based events.
 * ... easily animate elements with parallax effects.
 * ... add infinite scrolling via ajax to load content at set scroll positions.
-* ... call functions when an element(s) scrolls into and/or out of view (firing on the top or bottom of the element).
+* ... call functions when an element(s) scrolls into and/or out of view.
 * ... call functions based on scroll direction ONLY when an element is in view.
 * ... call functions based on scroll direction continuously.
-* ... fire code at any scroll position via the usage of element targeting in combination with specifying an offset.
+* ... call functions at any scroll position.
 
 ## Usage
 
