@@ -1,6 +1,6 @@
 # jQuery Scrollfire
 
-Version 1.2.0
+Version 1.3.0
 
 ## Summary
 
@@ -72,20 +72,30 @@ $('.container').scrollfire({
 // Example of using parallax scrolling
 $('.parallax-cell').scrollfire({
 
-    // Parallax active when element is outside of offset
+    // Parallax is disabled when element is 100 pixels away from scrolling out of view in either direction
     offset: 100,
     parallax: {
 
         // The element the jQuery selected element is a direct child of
-        childOf: $('.container'),
+        parent: $('.container'),
 
         // Parallax is 75% the window scrolling speed
-        speed: 0.75
+        speed: 0.75,
+
+        // Bound the parallax element within the confines of its parent
+        bounded: true
     },
 
     // Additionally, you can still use any of the callbacks
     onScroll: function( elm, distance_scrolled, direction ) {
-        //console.log('Happening continuously!');
+        //console.log('Happening continuously);
+    },
+
+    onScrollDown: function( elm ) {
+        $(elm).css('font-weight', 'bold');
+    },
+    onScrollUp: function( elm ) {
+        $(elm).css('font-weight', 'normal');
     }
 });
 ```
@@ -124,3 +134,7 @@ See `example.html` in examples folder.
 ### Version 1.2.0
 
 * added immediate parallax initialization
+
+### Version 1.3.0
+
+* added parallax bounding functionality

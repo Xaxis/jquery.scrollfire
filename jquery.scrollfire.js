@@ -48,10 +48,13 @@
         parallax: {
 
           // The element the parallax scroll is to be relative to
-          childOf: null,
+          parent: null,
 
           // The speed differential relative to the rate of scroll
-          speed: 1
+          speed: 1,
+
+          // Is the parallaxed element to be bounded within its parent
+          bounded: true
         },
 
         // Offsets
@@ -164,7 +167,7 @@
             value._on_scroll_down( value._element, scroll_diff, perc_from_top );
 
             // Execute parallax scroll relative to element
-            if (value._parallax.childOf && (to_top_distance >= value._offset)) {
+            if (value._parallax.parent && (to_top_distance >= value._offset)) {
 
               // Parallax element's current position from top of container element
               var parallax_elm_from_top = $(value._element).position().top;
@@ -173,7 +176,7 @@
               var parallax_pos = (parallax_elm_from_top - (scroll_diff * value._parallax.speed));
 
               // Parallax scroll only while still within container element
-              if (parallax_pos >= 0) {
+              if (parallax_pos >= 0 || !value._parallax.bounded) {
                 $(value._element).css('top', parallax_pos);
               }
             }
@@ -225,7 +228,7 @@
             value._on_scroll_up( value._element, scroll_diff, perc_from_top );
 
             // Execute parallax scroll relative to element
-            if (value._parallax.childOf) {
+            if (value._parallax.parent) {
 
               // Parallax element's current position from top of container element
               var parallax_elm_from_top = $(value._element).position().top;
@@ -234,11 +237,11 @@
               var parallax_pos = (parallax_elm_from_top + (scroll_diff * value._parallax.speed));
 
               // Calculate the position offset induced by element padding
-              var container_padding = value._parallax.childOf.css('padding-bottom').replace(/px/g, "");
+              var container_padding = value._parallax.parent.css('padding-bottom').replace(/px/g, "");
               var parallax_offset = (container_padding == '0') ? $(value._element).outerHeight() : $(value._element).height();
 
               // Parallax scroll only while still within container element
-              if ((parallax_pos + parallax_offset - container_padding) <= value._parallax.childOf.height()) {
+              if ((parallax_pos + parallax_offset - container_padding) <= value._parallax.parent.height() || !value._parallax.bounded) {
                 $(value._element).css('top', parallax_pos);
               }
             }

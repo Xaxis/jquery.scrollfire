@@ -13,7 +13,7 @@
             margin: 0 auto;
             padding: 10px;
             width: 600px;
-            height: 600px;
+            height: 400px;
             border: 8px dashed deepskyblue;
             position: relative;
             background-color: #add8e6;
@@ -26,7 +26,7 @@
             position: absolute;
             width: 100px;
             height: 50px;
-            top: 135px;
+            top: 300px;
             left: 250px;
             text-align: center;
         }
@@ -55,11 +55,13 @@
 <section>
     <h4>Example 3</h4>
     <div class="container-3 container">
+        <div class="parallax-cell">Parallaxed Element</div>
     </div>
 </section>
 <section>
     <h4>Example 4</h4>
     <div class="container-4 container">
+        <div class="parallax-cell">Parallaxed Element</div>
     </div>
 </section>
 <section>
@@ -136,15 +138,25 @@
             parallax: {
 
                 // The element the jQuery selected element is a direct child of
-                childOf: $('.container'),
+                parent: $('.container'),
 
                 // Parallax is 75% the window scrolling speed
-                speed: 0.75
+                speed: 0.75,
+
+                // Bound the parallax element within the confines of its parent
+                bounded: true
             },
 
             // Additionally, you can still use any of the callbacks
             onScroll: function( elm, distance_scrolled, direction ) {
                 //console.log('Happening continuously);
+            },
+
+            onScrollDown: function( elm ) {
+                $(elm).css('font-weight', 'bold');
+            },
+            onScrollUp: function( elm ) {
+                $(elm).css('font-weight', 'normal');
             }
         });
 
