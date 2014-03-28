@@ -31,7 +31,7 @@ Often it is useful to have the ability to execute code upon the scrolling of an 
 ### Initializing Scrollfire
 
 ```javascript
-// Example of using the once methods
+// Example of initializing scrollfire with all of its callbacks and most of its properties
 $('.container').scrollfire({
     offset: 100,
     //topInOffset: 0,
@@ -68,10 +68,10 @@ $('.container').scrollfire({
 });
 
 
-// Example of using parallax scrolling (Note: child must be positioned absolutely to relatively positioned parent)
+// Example of using parallax scrolling
 $('.parallax-cell').scrollfire({
 
-    // Parallax is disabled when element is 100 pixels away from scrolling out of view in either direction
+    // Parallax active when element is outside of offset
     offset: 100,
     parallax: {
 
