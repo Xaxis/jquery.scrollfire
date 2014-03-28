@@ -24,10 +24,6 @@ jQuery.scrollfire gives its users the ability to execute callbacks on a multitud
 
 Include `jquery.scrollfire.min.js` after jQuery.
 
-## Detailed Summary
-
-Often it is useful to have the ability to execute code upon the scrolling of an element(s) into and/or out of view. jQuery.scrollfire gives you this ability via four callback methods: `onTopIn`, `onTopOut`, `onBottomIn`, and `onBottomOut`.
-
 ### Initializing Scrollfire
 
 ```javascript
