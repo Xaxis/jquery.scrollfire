@@ -1,10 +1,10 @@
 {
   "name": "scrollfire",
   "title": "jQuery Scrollfire",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "description": "Allows useful callbacks to be fired upon elements scrolling into and out of view from both the top and bottom of the viewport/window. Additionally, provides a mechanism to animate parallax elements.",
   "keywords": [
-    "scroll", "scrolling", "parallax", "responsive", "event", "DOM", "jquery", "window", "monitoring"
+    "scroll", "scrolling", "parallax", "responsive", "event", "DOM", "jquery", "window", "monitoring", "waypoint", "infinite"
   ],
   "author": {
     "name": "Wil Neeley",

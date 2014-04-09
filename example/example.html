@@ -6,17 +6,27 @@
         *, *:before, *:after {
             -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box;
         }
+        body {
+            margin: 0;
+            padding: 0;
+        }
         section {
-            margin-bottom: 600px;
+            margin-bottom: 200px;
         }
         .container {
             margin: 0 auto;
-            padding: 10px;
+            padding: 20px;
             width: 600px;
             height: 400px;
-            border: 8px dashed deepskyblue;
+            border: 1px dashed deepskyblue;
             position: relative;
             background-color: #add8e6;
+        }
+        .fully-visible {
+            border: 1px dashed palevioletred;
+        }
+        .fully-hidden {
+            border: 1px dashed blueviolet;
         }
         .parallax-cell {
             border: 1px dashed white;
@@ -24,142 +34,266 @@
             color: white;
             padding: 5px;
             position: absolute;
-            width: 100px;
-            height: 50px;
-            top: 300px;
-            left: 250px;
+            width: 300px;
+            height: 30px;
+            top: 200px;
+            left: 155px;
             text-align: center;
+            z-index: 9998;
+        }
+        .offset_boundary {
+            width: 100%;
+            position: fixed;
+            background-color: fuchsia;
+            opacity: 0.30;
+            z-index: 9999;
+        }
+        #offset_boundary_top {
+            top: 0px;
+            height: 150px;
+            border-bottom: 1px dashed red;
+        }
+        #offset_boundary_bot {
+            bottom: 0px;
+            height: 150px;
+            border-top: 1px dashed red;
+        }
+        .parallax-cell-2 {
+            margin: 30px 0;
+        }
+        .margin-example-cell {
+            height: 90px;
+            width: 300px;
+            position: absolute;
+            top: 100px;
+            left: 155px;
+            border-top: 1px dashed red;
+            border-bottom: 1px dashed red;
         }
     </style>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
     <script type="text/javascript" src="../jquery.scrollfire.js"></script>
 </head>
 <body>
-<div id="top_offset_indicator"></div>
-<div id="bottom_offset_indicator"></div>
+<div id="offset_boundary_top" class="offset_boundary"></div>
+<div id="offset_boundary_bot" class="offset_boundary"></div>
 <h1>jQuery Scrollfire Example</h1>
 <h2>Scroll window to view examples.</h2>
 <button id="1">Destroy Parallax Scrolling</button>
 <section>
-    <h4>Example 1</h4>
+    <h4>Parallax relative to container element</h4>
     <div class="container-1 container">
-        <div class="parallax-cell">Parallaxed Element</div>
+        <div class="parallax-cell parallax-cell-1">Parallaxed Element</div>
     </div>
 </section>
 <section>
-    <h4>Example 2</h4>
+    <h4>Parallax element confined by its margins</h4>
     <div class="container-2 container">
-        <div class="parallax-cell">Parallaxed Element</div>
+        <div class="margin-example-cell"></div>
+        <div class="parallax-cell parallax-cell-2">Parallaxed Element</div>
     </div>
 </section>
 <section>
-    <h4>Example 3</h4>
+    <h4>Example of inverting the direction of parallaxed element</h4>
     <div class="container-3 container">
-        <div class="parallax-cell">Parallaxed Element</div>
+        <div class="parallax-cell parallax-cell-3">Parallaxed Element</div>
     </div>
 </section>
 <section>
-    <h4>Example 4</h4>
+    <h4>Example of adjusting the parallax speed and easing</h4>
     <div class="container-4 container">
-        <div class="parallax-cell">Parallaxed Element</div>
+        <div class="parallax-cell parallax-cell-4">Parallaxed Element</div>
     </div>
 </section>
 <section>
-    <h4>Example 5</h4>
+    <h4>Example of adjusting the parallax distance by a scalar multiplier</h4>
     <div class="container-5 container">
+        <div class="parallax-cell parallax-cell-5">Parallaxed Element</div>
     </div>
 </section>
 <section>
     <h4>Example 6</h4>
     <div class="container-6 container">
+        <div class="parallax-cell parallax-cell-6">Parallaxed Element</div>
     </div>
 </section>
 <section>
     <h4>Example 7</h4>
     <div class="container-7 container">
+        <div class="parallax-cell parallax-cell-7">Parallaxed Element</div>
     </div>
 </section>
 <section>
     <h4>Example 8</h4>
     <div class="container-8 container">
+        <div class="parallax-cell parallax-cell-8">Parallaxed Element</div>
     </div>
 </section>
 <section>
     <h4>Example 9</h4>
     <div class="container-9 container">
+        <div class="parallax-cell parallax-cell-9">Parallaxed Element</div>
     </div>
 </section>
 
 <script>
     $(document).ready(function() {
 
-        // Example of using the once methods
+        // Using scrollfire callbacks
         $('.container').scrollfire({
+
+            // Offsets
             offset: 0,
-            topInOffset: 0,
-            topOutOffset: 0,
-            bottomInOffset: 0,
-            bottomOutOffset: 0,
+            topOffset: 150,
+            bottomOffset: 150,
+
+            // Fires once when element begins to come in from the top
             onTopIn: function( elm, distance_scrolled ) {
-                $(elm).animate({opacity: 1}, 500);
+                $(elm).animate({opacity: 1.0}, 500);
+                $(elm).removeClass('fully-visible');
+                $(elm).find('.parallax-cell').html('onTopIn');
             },
+
+            // Fires once when element beings to go out at the top
             onTopOut: function( elm, distance_scrolled ) {
                 $(elm).animate({opacity: 0.2}, 500);
+                $(elm).removeClass('fully-visible');
+                $(elm).find('.parallax-cell').html('onTopOut');
             },
+
+            // Fires once when element begins to come in from the bottom
             onBottomIn: function( elm, distance_scrolled ) {
                 $(elm).animate({opacity: 1}, 500);
+                $(elm).removeClass('fully-visible');
+                $(elm).find('.parallax-cell').html('onBottomIn');
             },
+
+            // Fires once when element begins to go out at the bottom
             onBottomOut: function( elm, distance_scrolled ) {
                 $(elm).animate({opacity: 0.2}, 500);
+                $(elm).removeClass('fully-visible');
+                $(elm).find('.parallax-cell').html('onBottomOut');
             },
-            onScroll: function( elm, distance_scrolled, scroll_direction ) {
-                //console.log('Happening continuously while scrolling in either direction');
+
+            // Fires once when element goes completely out of view at the top
+            onTopHidden: function( elm ) {
+                $(elm).removeClass('fully-visible').addClass('fully-hidden');
+                $(elm).find('.parallax-cell').html('onTopHidden');
             },
-            onScrollDown: function( elm, distance_scrolled, percentage_to_top ) {
-                //console.log('Continuously happening while scrolling down when element is in view!');
+
+            // Fires once when element completely comes into view from the bottom
+            onBottomVisible: function( elm ) {
+                $(elm).removeClass('fully-hidden').addClass('fully-visible');
+                $(elm).find('.parallax-cell').html('onBottomVisible');
             },
-            onScrollUp: function( elm, distance_scrolled, percentage_to_top ) {
-                //console.log('Continuously happening while scrolling up when element is in view!');
+
+            // Fires once when element goes completely out of view at the bottom
+            onBottomHidden: function( elm ) {
+                $(elm).removeClass('fully-visible').addClass('fully-hidden');
+                $(elm).find('.parallax-cell').html('onBottomHidden');
             },
+
+            // Fires once when element completely comes into view from the top
+            onTopVisible: function( elm ) {
+                $(elm).removeClass('fully-hidden').addClass('fully-visible');
+                $(elm).find('.parallax-cell').html('onTopVisible');
+            },
+
+            // Fires continuously while scrolling in either direction while element is in at least partial view
+            onScroll: function( elm, distance_scrolled ) {
+            },
+
+            // Fires continuously while scrolling down and while the element is in at least partial view
+            onScrollDown: function( elm, distance_scrolled ) {
+            },
+
+            // Fires continuously while scrolling up and while the element is in at least partial view
+            onScrollUp: function( elm, distance_scrolled ) {
+            },
+
+            // Fires continuously while scrolling in either direction regardless of if the element is in view
+            onScrollAlways: function( elm, distance_scrolled ) {
+            },
+
+            // Fires continuously while scrolling down regardless of if the element is in view
             onScrollDownAlways: function( elm, distance_scrolled ) {
-                //console.log('Continuously happening while scrolling down!');
             },
+
+            // Fires continuously while scrolling up regardless of if the element is in view
             onScrollUpAlways: function( elm, distance_scrolled ) {
-                //console.log('Continuously happening while scrolling up');
             }
         });
 
 
-        // Example of using parallax scrolling
-        $('.parallax-cell').scrollfire({
-
-            // Parallax is disabled when 100px from top/bottom of window
-            offset: 100,
+        // Example of parallaxing an element within its parent container (default behavior)
+        $('.parallax-cell-1').scrollfire({
             parallax: {
-
-                // The element the jQuery selected element is a direct child of
-                parent: $('.container'),
-
-                // Parallax is 75% the window scrolling speed
-                speed: 0.75,
-
-                // Bound the parallax element within the confines of its parent
-                bounded: true
-            },
-
-            // Additionally, you can still use any of the callbacks
-            onScroll: function( elm, distance_scrolled, direction ) {
-                //console.log('Happening continuously);
-            },
-
-            onScrollDown: function( elm ) {
-                $(elm).css('font-weight', 'bold');
-            },
-            onScrollUp: function( elm ) {
-                $(elm).css('font-weight', 'normal');
+                active: true,
+                parent: $('.parallax-cell-1').parent()
             }
         });
 
+
+        // Example of using parallaxed element that respects its margins as a boundary
+        $('.parallax-cell-2').scrollfire({
+            parallax: {
+                active: true,
+                bound: true,
+                speed: 150,
+                easing: 'linear'
+            }
+        });
+        $('.margin-example-cell').scrollfire({
+            parallax: {
+                active: true,
+                speed: 150
+            }
+        });
+
+
+        // Example of inverting a parallax element's direction
+        $('.parallax-cell-3').scrollfire({
+            parallax: {
+                active: true,
+                bound: false,
+                invert: true,
+                speed: 150,
+                easing: 'linear'
+            }
+        });
+
+
+        // Example of adjusting the parallax speed and easing
+        $('.parallax-cell-4').scrollfire({
+            parallax: {
+                active: true,
+                bound: false,
+                invert: false,
+                speed: 500,
+                easing: 'swing'
+            }
+        });
+
+
+        // Example of adjusting the parallax distance by a scalar multiplier
+        $('.parallax-cell-5').scrollfire({
+            parallax: {
+                active: true,
+                bound: false,
+                invert: false,
+                speed: 10,
+                easing: 'linear',
+                scalar: 0.25
+            }
+        });
+
+
+        // Parallax multiple elements (active is the only required property)
+        $('.parallax-cell-6, .parallax-cell-7, .parallax-cell-8, .parallax-cell-9').scrollfire({
+            parallax: {
+                active: true
+            }
+        });
 
         // Button event handler - Remove registered scrollfire elements
         $('#1').click(function(e) {

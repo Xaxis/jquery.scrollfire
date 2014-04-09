@@ -1,6 +1,6 @@
 # jQuery Scrollfire
 
-Version 1.3.0
+Version 1.4.0
 
 ## Summary
 
@@ -13,9 +13,11 @@ Wil Neeley ( [@wilneeley](http://twitter.com/wilneeley) / [trestlemedia.net](htt
 ## Overview
 
 jQuery.scrollfire gives its users the ability to execute callbacks on a multitude of scroll based events.
+* ... implement way points to trigger menu animations.
 * ... easily animate elements with parallax effects.
 * ... add infinite scrolling via ajax to load content at set scroll positions.
-* ... call functions when an element(s) scrolls into and/or out of view.
+* ... call functions when elements scroll into and/or out of view.
+* ... call functions when elements scroll COMPLETELY into/out of view.
 * ... call functions based on scroll direction ONLY when an element is in view.
 * ... call functions based on scroll direction continuously.
 * ... call functions at any scroll position.
@@ -29,69 +31,152 @@ Include `jquery.scrollfire.min.js` after jQuery.
 ```javascript
 // Example of initializing scrollfire with all of its callbacks and most of its properties
 $('.container').scrollfire({
-    offset: 100,
-    //topInOffset: 0,
-    //topOutOffset: 0,
-    //bottomInOffset: 0,
-    //bottomOutOffset: 0,
+
+    // Offsets
+    offset: 0,
+    topOffset: 150,
+    bottomOffset: 150,
+
+    // Fires once when element begins to come in from the top
     onTopIn: function( elm, distance_scrolled ) {
-        $(elm).animate({opacity: 1}, 500);
+        $(elm).animate({opacity: 1.0}, 500);
+        $(elm).removeClass('fully-visible');
+        $(elm).find('.parallax-cell').html('onTopIn');
     },
+
+    // Fires once when element beings to go out at the top
     onTopOut: function( elm, distance_scrolled ) {
         $(elm).animate({opacity: 0.2}, 500);
+        $(elm).removeClass('fully-visible');
+        $(elm).find('.parallax-cell').html('onTopOut');
     },
+
+    // Fires once when element begins to come in from the bottom
     onBottomIn: function( elm, distance_scrolled ) {
         $(elm).animate({opacity: 1}, 500);
+        $(elm).removeClass('fully-visible');
+        $(elm).find('.parallax-cell').html('onBottomIn');
     },
+
+    // Fires once when element begins to go out at the bottom
     onBottomOut: function( elm, distance_scrolled ) {
         $(elm).animate({opacity: 0.2}, 500);
+        $(elm).removeClass('fully-visible');
+        $(elm).find('.parallax-cell').html('onBottomOut');
     },
-    onScroll: function( elm, distance_scrolled, scroll_direction ) {
-        //console.log('Happening continuously while scrolling in either direction');
+
+    // Fires once when element goes completely out of view at the top
+    onTopHidden: function( elm ) {
+        $(elm).removeClass('fully-visible').addClass('fully-hidden');
+        $(elm).find('.parallax-cell').html('onTopHidden');
     },
-    onScrollDown: function( elm, distance_scrolled, percentage_to_top ) {
-        //console.log('Continuously happening while scrolling down when element is in view!');
+
+    // Fires once when element completely comes into view from the bottom
+    onBottomVisible: function( elm ) {
+        $(elm).removeClass('fully-hidden').addClass('fully-visible');
+        $(elm).find('.parallax-cell').html('onBottomVisible');
     },
-    onScrollUp: function( elm, distance_scrolled, percentage_to_top ) {
-        //console.log('Continuously happening while scrolling up when element is in view!');
+
+    // Fires once when element goes completely out of view at the bottom
+    onBottomHidden: function( elm ) {
+        $(elm).removeClass('fully-visible').addClass('fully-hidden');
+        $(elm).find('.parallax-cell').html('onBottomHidden');
     },
+
+    // Fires once when element completely comes into view from the top
+    onTopVisible: function( elm ) {
+        $(elm).removeClass('fully-hidden').addClass('fully-visible');
+        $(elm).find('.parallax-cell').html('onTopVisible');
+    },
+
+    // Fires continuously while scrolling in either direction while element is in at least partial view
+    onScroll: function( elm, distance_scrolled ) {
+    },
+
+    // Fires continuously while scrolling down and while the element is in at least partial view
+    onScrollDown: function( elm, distance_scrolled ) {
+    },
+
+    // Fires continuously while scrolling up and while the element is in at least partial view
+    onScrollUp: function( elm, distance_scrolled ) {
+    },
+
+    // Fires continuously while scrolling in either direction regardless of if the element is in view
+    onScrollAlways: function( elm, distance_scrolled ) {
+    },
+
+    // Fires continuously while scrolling down regardless of if the element is in view
     onScrollDownAlways: function( elm, distance_scrolled ) {
-        //console.log('Continuously happening while scrolling down!');
     },
+
+    // Fires continuously while scrolling up regardless of if the element is in view
     onScrollUpAlways: function( elm, distance_scrolled ) {
-        //console.log('Continuously happening while scrolling up');
     }
 });
 ```
 
 ```javascript
-// Example of using parallax scrolling
-$('.parallax-cell').scrollfire({
-
-    // Parallax is disabled when element is 100 pixels away from scrolling out of view in either direction
-    offset: 100,
+// Example of parallaxing an element within its parent container (default behavior)
+$('.parallax-cell-1').scrollfire({
     parallax: {
+        active: true,
+        parent: $('.parallax-cell-1').parent()
+    }
+});
 
-        // The element the jQuery selected element is a direct child of
-        parent: $('.container'),
 
-        // Parallax is 75% the window scrolling speed
-        speed: 0.75,
+// Example of using parallaxed element that respects its margins as a boundary
+$('.parallax-cell-2').scrollfire({
+    parallax: {
+        active: true,
+        bound: true,
+        speed: 150,
+        easing: 'linear'
+    }
+});
 
-        // Bound the parallax element within the confines of its parent
-        bounded: true
-    },
 
-    // Additionally, you can still use any of the callbacks
-    onScroll: function( elm, distance_scrolled, direction ) {
-        //console.log('Happening continuously);
-    },
+// Example of inverting a parallax element's direction
+$('.parallax-cell-3').scrollfire({
+    parallax: {
+        active: true,
+        bound: false,
+        invert: true,
+        speed: 150,
+        easing: 'linear'
+    }
+});
 
-    onScrollDown: function( elm ) {
-        $(elm).css('font-weight', 'bold');
-    },
-    onScrollUp: function( elm ) {
-        $(elm).css('font-weight', 'normal');
+
+// Example of adjusting the parallax speed and easing
+$('.parallax-cell-4').scrollfire({
+    parallax: {
+        active: true,
+        bound: false,
+        invert: false,
+        speed: 500,
+        easing: 'swing'
+    }
+});
+
+
+// Example of adjusting the parallax distance by a scalar multiplier
+$('.parallax-cell-5').scrollfire({
+    parallax: {
+        active: true,
+        bound: false,
+        invert: false,
+        speed: 10,
+        easing: 'linear',
+        scalar: 0.25
+    }
+});
+
+
+// Parallax multiple elements (active is the only required property)
+$('.parallax-cell-6, .parallax-cell-7, .parallax-cell-8, .parallax-cell-9').scrollfire({
+    parallax: {
+        active: true
     }
 });
 ```
@@ -134,3 +219,8 @@ See `example.html` in examples folder.
 ### Version 1.3.0
 
 * added parallax bounding functionality
+
+### Version 1.4.0
+
+* refined scrollfire methods
+* added parallax speed, easing, invert, scalar, and active properties
