@@ -212,15 +212,15 @@ See `example.html` in examples folder.
 
 * added parallax scrolling methods: `onScrollDown`, `onScrollUp`, and `onScroll`
 
-### Version 1.2.0
+#### Version 1.2.0
 
 * added immediate parallax initialization
 
-### Version 1.3.0
+#### Version 1.3.0
 
 * added parallax bounding functionality
 
-### Version 1.4.0
+#### Version 1.4.0
 
 * refined scrollfire methods
 * added parallax speed, easing, invert, scalar, and active properties
