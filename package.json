@@ -1,0 +1,22 @@
+{
+  "name": "jquery.scrollfire",
+  "version": "1.0.0",
+  "description": "Allows useful callbacks to be fired upon elements scrolling into and out of view from both the top and bottom of the viewport/window.",
+  "main": "jquery.scrollfire.js",
+  "directories": {
+    "example": "example"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Xaxis/jquery.scrollfire.git"
+  },
+  "author": "Wil Neeley <william.neeley@gmail.com> (https://github.com/Xaxis)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Xaxis/jquery.scrollfire/issues"
+  },
+  "homepage": "https://github.com/Xaxis/jquery.scrollfire#readme"
+}
